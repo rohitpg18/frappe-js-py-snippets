@@ -1,0 +1,40 @@
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '20.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install
+  displayName: 'Install dependencies'
+
+- script: |
+    npm run lint
+  displayName: 'Lint and analyze code'
+
+- script: |
+    npm run build
+  displayName: 'Build the project'
+
+- script: |
+    npx vsce package
+  displayName: 'Package the VS Code extension'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '*.vsix' # The packaged VSIX file
+    ArtifactName: 'vsix'
+    publishLocation: 'Container'
+  displayName: 'Save VSIX artifact'
+
+- script: |
+    npx vsce publish -p $VSCODE_MARKETPLACE_TOKEN
+  displayName: 'Publish to VS Code Marketplace'
+  env:
+    VSCODE_MARKETPLACE_TOKEN: $(VSCODE_MARKETPLACE_TOKEN) # Secret stored in Azure Pipelines
