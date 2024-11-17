@@ -1,0 +1,129 @@
+{
+	"Frappe WhiteListed Method": {
+		"prefix": "@",
+		"body": [
+			"@frappe.whitelist()"
+		],
+		"description": "Make Method Whitelisted"
+	},
+	
+	"Frappe API": {
+		"prefix": "frappe_api_method",
+		"body": [
+			"@frappe.whitelist()",
+			"def ${1:method_name}(${2:args}):",
+			"    ${3:# your API logic here}",
+			"    return ${4:{}}"
+		],
+		"description": "Create a Frappe API method"
+	},
+	
+	"Frappe Fetch Data": {
+		"prefix": "frappe_get_all",
+		"body": [
+			"data = frappe.get_all('${2:DocType}',",
+			"    filters={${3:'key': 'value'}},",
+			"    fields=[${4:'field1', 'field2'}])",
+			"return data"
+		],
+		"description": "Fetch data using Frappe ORM"
+	},
+	
+	"Frappe DB Set Value": {
+		"prefix": "frappe_set_value",
+		"body": [
+			"frappe.db.set_value('${2:DocType}', '${3:name}', '${4:field_name}', ${5:new_value})",
+		],
+		"description": "Set a value in Frappe using frappe.db.set_value and commit changes."
+	},
+	
+	"Frappe DB Set Values": {
+		"prefix": "frappe_set_values",
+		"body": [
+		  "frappe.db.set_value('${2:DocType}', '${3:name}', {",
+      "        '${4:field_name_1}': ${5:value_1},",
+      "        '${6:field_name_2}': ${7:value_2},",
+      "        ${8:# add more fields if needed}",
+      "    })",
+		],
+		"description": "Set a value in Frappe using frappe.db.set_value and commit changes."
+	},
+	  
+	"Frappe Controller Methods Without Class": {
+		"prefix": "frappe_controller_methods",
+		"body": [
+		  "import frappe",
+		  "",
+		  "def before_save(doc, method):",
+		  "    ${1:# Code to run before saving the document}",
+		  "    pass",
+		  "",
+		  "def validate(doc, method):",
+		  "    ${2:# Code to validate the document before saving}",
+		  "    pass",
+		  "",
+		  "def before_submit(doc, method):",
+		  "    ${3:# Code to run before submitting the document}",
+		  "    pass",
+		  "",
+		  "def after_insert(doc, method):",
+		  "    ${4:# Code to run after the document is inserted}",
+		  "    pass",
+		  "",
+		  "def on_update(doc, method):",
+		  "    ${5:# Code to run when the document is updated}",
+		  "    pass",
+		  "",
+		  "def on_cancel(doc, method):",
+		  "    ${6:# Code to run when the document is cancelled}",
+		  "    pass",
+		  "",
+		  "def on_trash(doc, method):",
+		  "    ${7:# Code to run when the document is trashed}",
+		  "    pass",
+		],
+		"description": "Frappe controller methods without class structure."
+	},
+
+	"Frappe Controller Methods With Class": {
+		"prefix": "frappe_class_controller_methods",
+		"body": [
+		  "def before_save(self):",
+		  "    ${1:# Code to run before saving the document}",
+		  "    pass",
+		  "",
+		  "def validate(self):",
+		  "    ${2:# Code to validate the document before saving}",
+		  "    pass",
+
+		  "",
+		  "def before_submit(self):",
+		  "    ${3:# Code to run before submitting the document}",
+		  "    pass",
+
+		  "",
+		  "def after_insert(self):",
+		  "    ${4:# Code to run after the document is inserted}",
+		  "    pass",
+
+		  "",
+		  "def on_update(self):",
+		  "    ${5:# Code to run when the document is updated}",
+		  "    pass",
+
+		  "",
+		  "def on_cancel(self):",
+		  "    ${6:# Code to run when the document is cancelled}",
+		  "    pass",
+
+		  "",
+		  "def on_trash(self):",
+		  "    ${7:# Code to run when the document is trashed}",
+		  "    pass",
+
+		],
+		"description": "Frappe controller methods without class structure."
+	}
+	
+	  
+}

@@ -1,0 +1,48 @@
+{
+  "name": "frappe-js-py-snippets",
+  "displayName": "Frappe JS and Python Snippets",
+  "description": "Extension will add shortcuts to use frappe js and py snippets",
+  "main": "./dist/extension.js",
+  "publisher": "rohitpg18",
+  "version": "0.0.2",
+  "engines": {
+    "vscode": "^1.93.0" 
+  },
+  "activationEvents": [
+    "onLanguage:javascript",
+    "onLanguage:python"
+  ],
+  "categories": [
+    "Snippets"
+  ],
+  "contributes": {
+    "snippets": [
+      {
+        "language": "javascript",
+        "path": "./snippets/javascript.json"
+      },
+      {
+        "language": "python",
+        "path": "./snippets/python.json"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.93.0",
+    "@types/mocha": "^10.0.7",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^8.3.0",
+    "@typescript-eslint/parser": "^8.3.0",
+    "eslint": "^9.9.1",
+    "typescript": "^5.5.4",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rohitpg18/frappe-js-py-snippets.git"
+  },
+  "scripts": {
+    "build": "npx tsc"
+  }
+}

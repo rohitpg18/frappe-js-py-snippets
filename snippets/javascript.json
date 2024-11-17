@@ -1,0 +1,342 @@
+{
+	"Frappe Custom Button": {
+		"prefix": "custom_button_frappe",
+		"body": [
+			"frm.add_custom_button(__('Button Label'), function() {",
+			"    frappe.call({",
+			"        method: '$2',",
+			"        args: {",
+			"            $3",
+			"        },",
+			"        callback: function(r) {",
+			"            if(r.message) {",
+			"                frappe.msgprint(__('Message'));",
+			"            }",
+			"        }",
+			"    });",
+			"});"
+		],
+		"description": "Add a Custom Button"
+	},
+
+	"Frappe API Call": {
+		"prefix": "frappe_call",
+		"body": [
+			"frappe.call({",
+			"    method: '$2',",
+			"    args: {",
+			"        $3",
+			"    },",
+			"    callback: function(r) {",
+			"        if(r.message) {",
+			"            frappe.msgprint(__('Message'));",
+			"        }",
+			"    }",
+			"});",
+		],
+		"description": "Call API function"
+	},
+
+	"Frappe Form Refresh": {
+		"prefix": "form_js_frappe",
+		"body": [
+			"frappe.ui.form.on('$1', {",
+			"    refresh: function(frm) {",
+			"        // Add custom logic here",
+			"        console.log('Form refreshed');",
+			"    }",
+			"});"
+		],
+		"description": "Initialize form JS"
+	},
+
+	"Frappe Form Event Triggers": {
+		"prefix": "form_events_frappe",
+		"body": [
+			"onload: function(frm) {",
+			"    // Code for onload event",
+			"    console.log('Form loaded');",
+			"},",
+			"before_save: function(frm) {",
+			"    // Code before save event",
+			"    console.log('Before save');",
+			"},",
+			"after_save: function(frm) {",
+			"    // Code after save event",
+			"    console.log('After save');",
+			"},",
+			"validate: function(frm) {",
+			"    // Code for validate event",
+			"    console.log('Validating form');",
+			"},",
+			"on_submit: function(frm) {",
+			"    // Code for on submit event",
+			"    console.log('Form submitted');",
+			"},",
+			"on_cancel: function(frm) {",
+			"    // Code for on cancel event",
+			"    console.log('Form canceled');",
+			"}"
+		],
+		"description": "All Common Frappe Form Event Triggers"
+	},
+
+	"Frappe Dialog": {
+		"prefix": "dialog_frappe",
+		"body": [
+			"let dialog = new frappe.ui.Dialog({",
+			"    title: '$1',",
+			"    fields: [",
+			"        {",
+			"            label: __('$2'),",
+			"            fieldname: '$3',",
+			"            fieldtype: '$4',",
+			"            options: '$5',",
+			"            reqd: $6",
+			"        },",
+			"        {",
+			"            label: __('$7'),",
+			"            fieldname: '$8',",
+			"            fieldtype: '$9',",
+			"            options: '$10',",
+			"            reqd: $11",
+			"        }",
+			"        // Add more fields as needed",
+			"    ],",
+			"    primary_action_label: __('$12'),",
+			"    primary_action: function() {",
+			"        let values = dialog.get_values();",
+			"        console.log(values);",
+			"    },",
+			"    secondary_action_label: __('$14'),",
+			"    secondary_action: function() {",
+			"        // Custom action for the secondary button",
+			"        frappe.msgprint(__('Secondary Action Triggered'));",
+			"        dialog.hide();",
+			"    },",
+			"    size: '$15'  // Options: small, large, extra-large",
+			"});",
+			"dialog.show();"
+		],
+		"description": "Dialog with Primary and Secondary Action, Custom Size"
+	},
+
+	"Frappe Set Query Filter": {
+		"prefix": "set_query_frappe",
+		"body": [
+			"frm.set_query('${1:fieldname}', function(doc) {",
+			"    return {",
+			"        filters: {",
+			"            ${2:link_doc_fieldname}: ${3:value},",
+			"            $4: $5",
+			"        },",
+			"    };",
+			"});"
+		],
+		"description": "Set Query Filter on a Field"
+	},
+
+	"Frappe before_load Function": {
+		"prefix": "before_load_frappe",
+		"body": [
+			"before_load: function (frm) {",
+			"\t$2",
+			"}"
+		],
+		"description": "Creates a before_load function template"
+	},
+
+	"Frappe setup Function": {
+		"prefix": "setup_frappe",
+		"body": [
+			"setup: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Creates a setup function template"
+	},
+
+	"Frappe onload Function": {
+		"prefix": "onload_frappe",
+		"body": [
+			"onload: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Creates an onload function template"
+	},
+
+	"Frappe refresh Function": {
+		"prefix": "refresh_frappe",
+		"body": [
+			"refresh: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Creates a refresh function template"
+	},
+
+	"Frappe onload_post_render Function": {
+		"prefix": "onload_post_render_frappe",
+		"body": [
+			"onload_post_render: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Creates an onload_post_render function template"
+	},
+
+	"Frappe validate Function": {
+		"prefix": "validate_frappe",
+		"body": [
+			"validate: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Creates a validate function template"
+	},
+
+	"Frappe before_save Function": {
+		"prefix": "before_save_frappe",
+		"body": [
+			"before_save: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Creates a before_save function template"
+	},
+
+	"Frappe after_save Function": {
+		"prefix": "after_save_frappe",
+		"body": [
+			"after_save: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Creates an after_save function template"
+	},
+
+	"Frappe before_submit Function": {
+		"prefix": "before_submit_frappe",
+		"body": [
+			"before_submit: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Creates a before_submit function template"
+	},
+
+	"Frappe on_submit Function": {
+		"prefix": "on_submit_frappe",
+		"body": [
+			"on_submit: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Creates an on_submit function template"
+	},
+
+	"Frappe before_cancel Function": {
+		"prefix": "before_cancel_frappe",
+		"body": [
+			"before_cancel: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Creates a before_cancel function template"
+	},
+
+	"Frappe after_cancel Function": {
+		"prefix": "after_cancel_frappe",
+		"body": [
+			"after_cancel: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Creates an after_cancel function template"
+	},
+
+	"Frappe before_discard Function": {
+		"prefix": "before_discard_frappe",
+		"body": [
+			"before_discard: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Creates a before_discard function template"
+	},
+
+	"Frappe after_discard Function": {
+		"prefix": "after_discard_frappe",
+		"body": [
+			"after_discard: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Creates an after_discard function template"
+	},
+
+	"Frappe timeline_refresh Function": {
+		"prefix": "timeline_refresh_frappe",
+		"body": [
+			"timeline_refresh: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Creates a timeline_refresh function template"
+	},
+
+	"Frappe {fieldname}_on_form_rendered Function": {
+		"prefix": "fieldname_on_form_rendered_frappe",
+		"body": [
+			"${1:fieldname}_on_form_rendered: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Creates a {fieldname}_on_form_rendered function template"
+	},
+
+	"Frappe {fieldname} Function": {
+		"prefix": "fieldname_frappe",
+		"body": [
+			"${1:fieldname}: function (frm) {",
+			"\t$2",
+			"}"
+		],
+		"description": "Creates a {fieldname} function template"
+	},
+
+	"Frappe get_email_recipient_filters Function": {
+		"prefix": "get_email_recipient_filters_frappe",
+		"body": [
+			"get_email_recipient_filters: function (frm) {",
+			"\t",
+			"}"
+		],
+		"description": "Creates a get_email_recipient_filters function template"
+	},
+
+	"Frappe get_email_recipients Function": {
+		"prefix": "get_email_recipients_frappe",
+		"body": [
+			"get_email_recipients: function (frm) {",
+			"\t",
+			"}"
+		],
+		"description": "Creates a get_email_recipients function template"
+	},
+
+	
+	"Frappe Custom Group Button": {
+		"prefix": "custom_group_button_frappe",
+		"body": [
+		"frm.add_custom_button(__(\"${1:buttonName}\"), function() {",
+		"  // perform desired action such as routing to new form or fetching etc.",
+		"\t$2"
+		"}, __(\"${3:groupName}\"));"
+		],
+		"description": "Create a custom button with a group in Frappe framework"
+	}
+	  
+	  
+}
