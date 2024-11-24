@@ -37,7 +37,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      npx vsce publish -p $VSCODE_MARKETPLACE_TOKEN
+      npx vsce publish -p $(VSCODE_MARKETPLACE_TOKEN)
   displayName: 'Publish to VS Code Marketplace'
   env:
     VSCODE_MARKETPLACE_TOKEN: $(VSCODE_MARKETPLACE_TOKEN)
