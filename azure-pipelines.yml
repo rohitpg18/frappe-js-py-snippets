@@ -23,15 +23,22 @@ steps:
   displayName: 'Build the project'
 
 - script: |
-    npx vsce package
+    npx vsce package --out $(Build.ArtifactStagingDirectory)/extension.vsix
   displayName: 'Package the VS Code extension'
+
+- script: |
+    ls -R $(Build.ArtifactStagingDirectory)
+  displayName: 'List files in Artifact Staging Directory'
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '*.vsix' # The packaged VSIX file
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/extension.vsix'
     ArtifactName: 'vsix'
     publishLocation: 'Container'
   displayName: 'Save VSIX artifact'
+
+variables:
+- group: MarketplaceTokens
 
 - script: |
     npx vsce publish -p $VSCODE_MARKETPLACE_TOKEN
