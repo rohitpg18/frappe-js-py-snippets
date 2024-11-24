@@ -1,32 +1,504 @@
 {
-	"Frappe Custom Button": {
-		"prefix": "custom_button_frappe",
+	"form event": {
+        "prefix": ["frm", "form", "frappe_form_js", "form_script"],
+        "body": [
+            "frappe.ui.form.on(\"$1\", {",
+            "    ${2|setup,onload,refresh|}(frm) {",
+            "     $0",
+            "    }",
+            "});"
+        ],
+        "description": "Form Scripts depend on events to trigger. Here are the list of all Form Events that are triggered by Form. These events will get frm as the first parameter in their handler functions."
+    },
+
+	"form setup event": {
+		"prefix": ["setup_frappe", "setup", "setup_event"],
 		"body": [
-			"frm.add_custom_button(__('Button Label'), function() {",
-			"    frappe.call({",
-			"        method: '$2',",
-			"        args: {",
-			"            $3",
-			"        },",
-			"        callback: function(r) {",
-			"            if(r.message) {",
-			"                frappe.msgprint(__('Message'));",
-			"            }",
-			"        }",
-			"    });",
-			"});"
+			"setup: function (frm) {",
+			"\t$2",
+			"},"
 		],
-		"description": "Add a Custom Button"
+		"description": "Triggered once when the form is created for the first time."
 	},
 
-	"Frappe API Call": {
-		"prefix": "frappe_call",
+	"form before_load event": {
+		"prefix": ["before_load_frappe", "before_load", "before_load_event"],
+		"body": [
+			"before_load: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Triggered before the form is about to load."
+	},
+
+	"form onload event": {
+		"prefix": ["onload_frappe", "onload", "onload_event"],
+		"body": [
+			"onload: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Triggered when the form is loaded and is about to render."
+	},
+
+	"form refresh event": {
+		"prefix": ["refresh_frappe", "refresh", "refresh_event"],
+		"body": [
+			"refresh: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Triggered when the form is loaded and rendered."
+	},
+
+	"form onload_post_render event": {
+		"prefix": ["onload_post_render_frappe", "onload_post_render", "onload_post_render_event", "opr"],
+		"body": [
+			"onload_post_render: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Triggered after the form is loaded and rendered."
+	},
+
+	"form validate event": {
+		"prefix": ["validate_frappe", "validate", "validate_event"],
+		"body": [
+			"validate: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Triggered before before_save."
+	},
+
+	"form before_save event": {
+		"prefix": ["before_save_frappe", "before_save", "before_save_event"],
+		"body": [
+			"before_save: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Triggered before save is called."
+	},
+
+	"form after_save event": {
+		"prefix": ["after_save_frappe", "after_save", "after_save_event"],
+		"body": [
+			"after_save: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Triggered after form is saved."
+	},
+
+	"form before_submit event": {
+		"prefix": ["before_submit_frappe", "before_submit", "before_submit_event"],
+		"body": [
+			"before_submit: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Triggered before submit is called."
+	},
+
+	"form on_submit event": {
+		"prefix": ["on_submit_frappe", "on_submit", "on_submit_event"],
+		"body": [
+			"on_submit: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Triggered after form is submitted."
+	},
+
+	"form before_cancel event": {
+		"prefix": ["before_cancel_frappe", "before_cancel", "before_cancel_event"],
+		"body": [
+			"before_cancel: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Triggered before cancel is called."
+	},
+
+	"form after_cancel event": {
+		"prefix": ["after_cancel_frappe", "after_cancel", "after_cancel_event"],
+		"body": [
+			"after_cancel: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Triggered after form is cancelled."
+	},
+
+	"form before_discard event": {
+		"prefix": ["before_discard_frappe", "before_discard", "before_discard_event"],
+		"body": [
+			"before_discard: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Triggered before discard is called."
+	},
+
+	"form after_discard event": {
+		"prefix": ["after_discard_frappe", "after_discard", "after_discard_event"],
+		"body": [
+			"after_discard: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Triggered after form is discarded."
+	},
+
+	"form timeline_refresh event": {
+		"prefix": ["timeline_refresh_frappe", "timeline_refresh", "timeline_refresh_event"],
+		"body": [
+			"timeline_refresh: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Triggered after form timeline is rendered."
+	},
+
+	"form {fieldname}_on_form_rendered event": {
+		"prefix": ["field_on_form_rendered_frappe", "field_on_form_rendered", "field_form_rendered_event"],
+		"body": [
+			"${1:fieldname}_on_form_rendered: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Triggered when a row is opened as a form in a Table field."
+	},
+
+	"form {fieldname} event": {
+		"prefix": ["fieldname_frappe", "fieldname", "field_change_event"],
+		"body": [
+			"${1:fieldname}: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Triggered when the value of fieldname is changed."
+	},
+
+	"form get_email_recipient_filters event": {
+		"prefix": ["email_recipient_filters_frappe", "get_email_recipient_filters", "email_filters_event"],
+		"body": [
+			"get_email_recipient_filters: function (frm, field) {",
+			"\treturn $2;",
+			"},"
+		],
+		"description": "Called by the email dialog to fetch default filters for email recipients."
+	},
+
+	"form get_email_recipients event": {
+		"prefix": ["email_recipients_frappe", "get_email_recipients", "email_recipients_event"],
+		"body": [
+			"get_email_recipients: function (frm, field) {",
+			"\treturn $2;",
+			"},"
+		],
+		"description": "Called by the email dialog to fetch default recipients."
+	},
+
+	"child_table before_{fieldname}_remove event": {
+		"prefix": ["before_field_remove_frappe", "before_field_remove", "before_field_remove_event"],
+		"body": [
+			"before_${1:fieldname}_remove: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Triggered when a row is about to be removed from a Table field."
+	},
+
+	"child_table {fieldname}_add event": {
+		"prefix": ["field_add_frappe", "field_add", "field_add_event"],
+		"body": [
+			"${1:fieldname}_add: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Triggered when a row is added to a Table field."
+	},
+
+	"child_table {fieldname}_remove event": {
+		"prefix": ["field_remove_frappe", "field_remove", "field_remove_event"],
+		"body": [
+			"${1:fieldname}_remove: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Triggered when a row is removed from a Table field."
+	},
+
+	"child_table {fieldname}_move event": {
+		"prefix": ["field_move_frappe", "field_move", "field_move_event"],
+		"body": [
+			"${1:fieldname}_move: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Triggered when a row is reordered to another location in a Table field."
+	},
+
+	"child_table form_render event": {
+		"prefix": ["child_table_form_render_frappe", "child_table_form_render", "child_table_form_render_event"],
+		"body": [
+			"form_render: function (frm) {",
+			"\t$2",
+			"},"
+		],
+		"description": "Triggered when a row is opened as a form in a Table field."
+	},
+
+	"set single value with frm.set_value": {
+		"prefix": ["frm_set_value_single", "frm.set_value", "set_value"],
+		"body": [
+			"frm.set_value('${1:fieldname}', '${2:value}')",
+		],
+		"description": "Set a single field value using frm.set_value and handle the promise."
+	},
+	
+	"set multiple values with frm.set_value": {
+		"prefix": ["frm_set_value_multiple", "frm.set_value", "set_value"],
+		"body": [
+			"frm.set_value({",
+			"  ${1:fieldname1}: '${2:value1}',",
+			"  ${3:fieldname2}: '${4:value2}'",
+			"})"
+		],
+		"description": "Set multiple field values at once using frm.set_value and handle the promise."
+	},
+
+	"frm.set_value with promise return": {
+		"prefix": ["frmsetvalue_promise", "frm.set_value_promise", "set_value"],
+		"body": [
+			"frm.set_value('${1:fieldname}', '${2:value}')",
+			"    .then(() => {",
+			"        // do something after value is set",
+			"    })"
+		],
+		"description": "Set value and do something after value set."
+	},
+
+	"trigger form save with frm.save": {
+		"prefix": [
+			"frmsave", 
+			"save_form", 
+			"trigger_form_save", 
+			"frm.save",
+			"form_save"
+		],
+		"body": [
+			"frm.save(${2| ,\"Submit\",\"Update\",\"Cancel\"|});"
+		],
+		"description": "Trigger form save. Will trigger validate, before_save, after_save, timeline_refresh and refresh. It can be used to trigger other save actions like Submit, Cancel and Update. In that case, the relevant events will be triggered."
+	},
+
+	"enable save button with frm.enable_save": {
+		"prefix": [
+			"frmenablesave", 
+			"enable_save_button", 
+			"enable_form_save", 
+			"frm.enable_save"
+		],
+		"body": [
+			"frm.enable_save();"
+		],
+		"description": "Enable the Save button in the form."
+	},
+
+	"disable save button with frm.disable_save": {
+		"prefix": [
+			"frmdisablesave", 
+			"disable_save", 
+			"disable_form_save", 
+			"frm.disable_save"
+		],
+		"body": [
+			"frm.disable_save();"
+		],
+		"description": "Disable the Save button in the form."
+	},
+
+	"enable/disable save button based on user role": {
+		"prefix": [
+			"frmenablesavecustom", 
+			"enable_save_custom", 
+			"enable_form_save_custom", 
+			"frm.enable_save"
+		],
+		"body": [
+			"// Enable save button conditionally based on user role",
+			"if (frappe.user_roles.includes('Custom Role')) {",
+			"    frm.enable_save();",
+			"} else {",
+			"    frm.disable_save();",
+			"}"
+		],
+		"description": "Enable or disable the Save button conditionally based on user roles."
+	},
+
+	"open email dialog with frm.email_doc": {
+		"prefix": [
+			"frmmaildoc", 
+			"email_dialog", 
+			"open_email_dialog", 
+			"frm.email_doc",
+			"email_doc"
+		],
+		"body": [
+			"// Open email dialog",
+			"frm.email_doc();"
+		],
+		"description": "Open the email dialog for this form."
+	},
+
+	"open email dialog with custom message using frm.email_doc": {
+		"prefix": [
+			"frmmaildocmessage", 
+			"email_dialog_message", 
+			"open_email_dialog_message", 
+			"frm.email_doc",
+			"email_doc"
+		],
+		"body": [
+			"// Open email dialog with some message",
+			"frm.email_doc(`Hello ${frm.doc.customer_name}`);"
+		],
+		"description": "Open the email dialog with a custom message for this form."
+	},
+
+	"reload document with frm.reload_doc": {
+		"prefix": [
+			"frmreloaddoc", 
+			"reload_doc", 
+			"reload_form_doc", 
+			"frm.reload_doc"
+		],
+		"body": [
+			"frm.reload_doc();"
+		],
+		"description": "Reload the document with the latest values from the server and call frm.refresh()."
+	},
+
+	"refresh field with frm.refresh_field": {
+		"prefix": [
+			"frmrefreshfield", 
+			"refresh_field", 
+			"frm.refresh_field"
+		],
+		"body": [
+			"frm.refresh_field('${1:field_name}');"
+		],
+		"description": "Refresh the field and its dependencies. Replace 'field_name' with the actual field name."
+	},
+
+	
+	"check if form is dirty with frm.is_dirty": {
+		"prefix": [
+			"frmdirtycheck", 
+			"check_dirty_form", 
+			"frm.is_dirty",
+			"is_dirty"
+		],
+		"body": [
+			"if (frm.is_dirty()) {",
+			"\tfrappe.show_alert('${1:Please save form before attaching a file}');",
+			"}"
+		],
+		"description": "Check if the form has unsaved changes and show an alert."
+	},
+
+	
+	"check if form is new with frm.is_new": {
+		"prefix": [
+			"is_new",
+			"frmnewcheck", 
+			"check_new_form", 
+			"frm.is_new"
+		],
+		"body": [
+			"// Check if the form is new and not saved yet",
+			"if (frm.is_new()) {",
+			"\t$2console.log('Form is New');",
+			"}"
+		],
+		"description": "Check if the form is new and unsaved, then add a custom button."
+	},
+	
+	"add custom button": {
+		"prefix": ["add_custom_button", "frm.add_custom_button"],
+		"body": [
+			"frm.add_custom_button(__('${1:Button Name}'), () => {",
+			"    ${2:console.log('perform_Action')}",
+			"});"
+		],
+		"description": "Add a custom button to the Frappe form with translation support."
+	},
+
+	"add custom button in group": {
+		"prefix": ["add_custom_button_group", "frm.add_custom_button"],
+		"body": [
+		"frm.add_custom_button(__(\"${1:Button Name}\"), () => {",
+		"    ${2:console.log('perform_Action')}",
+		"}, __('${3:Group Name}'));"
+		],
+		"description": "Add a custom button in a group to the Frappe form with translation support."
+	},
+
+	"custom button to navigate": {
+		"prefix": "custom_button_navigate",
+		"body": [
+			"frm.add_custom_button(__(\"${1:Button Name}\"), () => {",
+			"    frappe.set_route(\"Form\", ${2:Document Type}, ${3:Document Name});",
+			"});"
+		],
+		"description": "Add a custom button to navigate to another form."
+	},
+
+	"remove custom button": {
+		"prefix": "remove_custom_button",
+		"body": [
+			"frm.remove_custom_button(__(\"${1:Button Label}\"), ${2:__(\"${3:Group Name}\") || null});"
+		],
+		"description": "Remove a specific custom button by label (and optionally group)."
+	},
+
+	"change custom button type": {
+		"prefix": ["set_custom_button_status", "change_custom_button_type"],
+		"body": [
+			"frm.change_custom_button_type(__(\"${1:Button Label}\"), ${2:__(\"${3:Group Name}\") || null}, '${4|\"primary\", \"danger\"|}');",
+			"frm.refresh();"
+		],
+		"description": "Set the type and refresh a custom button dynamically."
+	},
+
+	"add row to child table": {
+		"prefix": ["add_child_table_row", "add_child"],
+		"body": [
+		"let values = {",
+		"    ${1:fieldname1}: \"${2:value}\",",
+		"    ${3:fieldname2}: \"${4:value}\"",
+		"};",
+		"",
+		"let row = frm.add_child(\"${5:child_table_field}\", values);",
+		"",
+		"frm.refresh_field(\"${5:child_table_field}\");"
+		],
+		"description": "Add a row dynamically to a child table field."
+	},
+
+	"frappe call": {
+		"prefix": ["frappe.call", "frappe_call"],
 		"body": [
 			"frappe.call({",
-			"    method: '$2',",
+			"    method: \"$2\",",
 			"    args: {",
 			"        $3",
 			"    },",
+			"    freeze: ${4|true,false|},",
+			"    async: ${4|true,false|},",
 			"    callback: function(r) {",
 			"        if(r.message) {",
 			"            frappe.msgprint(__('Message'));",
@@ -37,94 +509,10 @@
 		"description": "Call API function"
 	},
 
-	"Frappe Form Refresh": {
-		"prefix": "form_js_frappe",
+	"set query filter": {
+		"prefix": ["set_query", "link_filter"],
 		"body": [
-			"frappe.ui.form.on('$1', {",
-			"    refresh: function(frm) {",
-			"        // Add custom logic here",
-			"        console.log('Form refreshed');",
-			"    }",
-			"});"
-		],
-		"description": "Initialize form JS"
-	},
-
-	"Frappe Form Event Triggers": {
-		"prefix": "form_events_frappe",
-		"body": [
-			"onload: function(frm) {",
-			"    // Code for onload event",
-			"    console.log('Form loaded');",
-			"},",
-			"before_save: function(frm) {",
-			"    // Code before save event",
-			"    console.log('Before save');",
-			"},",
-			"after_save: function(frm) {",
-			"    // Code after save event",
-			"    console.log('After save');",
-			"},",
-			"validate: function(frm) {",
-			"    // Code for validate event",
-			"    console.log('Validating form');",
-			"},",
-			"on_submit: function(frm) {",
-			"    // Code for on submit event",
-			"    console.log('Form submitted');",
-			"},",
-			"on_cancel: function(frm) {",
-			"    // Code for on cancel event",
-			"    console.log('Form canceled');",
-			"}"
-		],
-		"description": "All Common Frappe Form Event Triggers"
-	},
-
-	"Frappe Dialog": {
-		"prefix": "dialog_frappe",
-		"body": [
-			"let dialog = new frappe.ui.Dialog({",
-			"    title: '$1',",
-			"    fields: [",
-			"        {",
-			"            label: __('$2'),",
-			"            fieldname: '$3',",
-			"            fieldtype: '$4',",
-			"            options: '$5',",
-			"            reqd: $6",
-			"        },",
-			"        {",
-			"            label: __('$7'),",
-			"            fieldname: '$8',",
-			"            fieldtype: '$9',",
-			"            options: '$10',",
-			"            reqd: $11",
-			"        }",
-			"        // Add more fields as needed",
-			"    ],",
-			"    primary_action_label: __('$12'),",
-			"    primary_action: function() {",
-			"        let values = dialog.get_values();",
-			"        console.log(values);",
-			"    },",
-			"    secondary_action_label: __('$14'),",
-			"    secondary_action: function() {",
-			"        // Custom action for the secondary button",
-			"        frappe.msgprint(__('Secondary Action Triggered'));",
-			"        dialog.hide();",
-			"    },",
-			"    size: '$15'  // Options: small, large, extra-large",
-			"});",
-			"dialog.show();"
-		],
-		"description": "Dialog with Primary and Secondary Action, Custom Size"
-	},
-
-	"Frappe Set Query Filter": {
-		"prefix": "set_query_frappe",
-		"body": [
-			"frm.set_query('${1:fieldname}', function(doc) {",
+			"frm.set_query(\"${1:fieldname}\", function(doc) {",
 			"    return {",
 			"        filters: {",
 			"            ${2:link_doc_fieldname}: ${3:value},",
@@ -134,209 +522,39 @@
 			"});"
 		],
 		"description": "Set Query Filter on a Field"
-	},
+	},  
 
-	"Frappe before_load Function": {
-		"prefix": "before_load_frappe",
+	"dialog box": {
+		"prefix": ["dialog_box", "frappe_dialog", "dialog"],
 		"body": [
-			"before_load: function (frm) {",
-			"\t$2",
-			"}"
+			"let dialog = new frappe.ui.Dialog({",
+			"    title: __(\"$1\"),",
+			"    fields: [",
+			"        {",
+			"            label: __(\"$2\"),",
+			"            fieldname: \"$3\",",
+			"            fieldtype: \"$4\",",
+			"            options: \"$5\",",
+			"            reqd: $6",
+			"        },",
+			"        // Add more fields as needed",
+			"    ],",
+			"    primary_action_label: __(\"$12\"),",
+			"    primary_action: function() {",
+			"        let values = dialog.get_values();",
+			"        console.log(values);",
+			"    },",
+			"    secondary_action_label: __(\"$14\"),",
+			"    secondary_action: function() {",
+			"        // Custom action for the secondary button",
+			"        frappe.msgprint(__('Secondary Action Triggered'));",
+			"        dialog.hide();",
+			"    },",
+			"    size: ${15|\"small\",\"large\",\"extra-large\"|}",
+			"});",
+			"dialog.show();"
 		],
-		"description": "Creates a before_load function template"
+		"description": "Dialog with Primary and Secondary Action, Custom Size"
 	},
-
-	"Frappe setup Function": {
-		"prefix": "setup_frappe",
-		"body": [
-			"setup: function (frm) {",
-			"\t$2",
-			"},"
-		],
-		"description": "Creates a setup function template"
-	},
-
-	"Frappe onload Function": {
-		"prefix": "onload_frappe",
-		"body": [
-			"onload: function (frm) {",
-			"\t$2",
-			"},"
-		],
-		"description": "Creates an onload function template"
-	},
-
-	"Frappe refresh Function": {
-		"prefix": "refresh_frappe",
-		"body": [
-			"refresh: function (frm) {",
-			"\t$2",
-			"},"
-		],
-		"description": "Creates a refresh function template"
-	},
-
-	"Frappe onload_post_render Function": {
-		"prefix": "onload_post_render_frappe",
-		"body": [
-			"onload_post_render: function (frm) {",
-			"\t$2",
-			"},"
-		],
-		"description": "Creates an onload_post_render function template"
-	},
-
-	"Frappe validate Function": {
-		"prefix": "validate_frappe",
-		"body": [
-			"validate: function (frm) {",
-			"\t$2",
-			"},"
-		],
-		"description": "Creates a validate function template"
-	},
-
-	"Frappe before_save Function": {
-		"prefix": "before_save_frappe",
-		"body": [
-			"before_save: function (frm) {",
-			"\t$2",
-			"},"
-		],
-		"description": "Creates a before_save function template"
-	},
-
-	"Frappe after_save Function": {
-		"prefix": "after_save_frappe",
-		"body": [
-			"after_save: function (frm) {",
-			"\t$2",
-			"},"
-		],
-		"description": "Creates an after_save function template"
-	},
-
-	"Frappe before_submit Function": {
-		"prefix": "before_submit_frappe",
-		"body": [
-			"before_submit: function (frm) {",
-			"\t$2",
-			"},"
-		],
-		"description": "Creates a before_submit function template"
-	},
-
-	"Frappe on_submit Function": {
-		"prefix": "on_submit_frappe",
-		"body": [
-			"on_submit: function (frm) {",
-			"\t$2",
-			"},"
-		],
-		"description": "Creates an on_submit function template"
-	},
-
-	"Frappe before_cancel Function": {
-		"prefix": "before_cancel_frappe",
-		"body": [
-			"before_cancel: function (frm) {",
-			"\t$2",
-			"},"
-		],
-		"description": "Creates a before_cancel function template"
-	},
-
-	"Frappe after_cancel Function": {
-		"prefix": "after_cancel_frappe",
-		"body": [
-			"after_cancel: function (frm) {",
-			"\t$2",
-			"},"
-		],
-		"description": "Creates an after_cancel function template"
-	},
-
-	"Frappe before_discard Function": {
-		"prefix": "before_discard_frappe",
-		"body": [
-			"before_discard: function (frm) {",
-			"\t$2",
-			"},"
-		],
-		"description": "Creates a before_discard function template"
-	},
-
-	"Frappe after_discard Function": {
-		"prefix": "after_discard_frappe",
-		"body": [
-			"after_discard: function (frm) {",
-			"\t$2",
-			"},"
-		],
-		"description": "Creates an after_discard function template"
-	},
-
-	"Frappe timeline_refresh Function": {
-		"prefix": "timeline_refresh_frappe",
-		"body": [
-			"timeline_refresh: function (frm) {",
-			"\t$2",
-			"},"
-		],
-		"description": "Creates a timeline_refresh function template"
-	},
-
-	"Frappe {fieldname}_on_form_rendered Function": {
-		"prefix": "fieldname_on_form_rendered_frappe",
-		"body": [
-			"${1:fieldname}_on_form_rendered: function (frm) {",
-			"\t$2",
-			"},"
-		],
-		"description": "Creates a {fieldname}_on_form_rendered function template"
-	},
-
-	"Frappe {fieldname} Function": {
-		"prefix": "fieldname_frappe",
-		"body": [
-			"${1:fieldname}: function (frm) {",
-			"\t$2",
-			"}"
-		],
-		"description": "Creates a {fieldname} function template"
-	},
-
-	"Frappe get_email_recipient_filters Function": {
-		"prefix": "get_email_recipient_filters_frappe",
-		"body": [
-			"get_email_recipient_filters: function (frm) {",
-			"\t",
-			"}"
-		],
-		"description": "Creates a get_email_recipient_filters function template"
-	},
-
-	"Frappe get_email_recipients Function": {
-		"prefix": "get_email_recipients_frappe",
-		"body": [
-			"get_email_recipients: function (frm) {",
-			"\t",
-			"}"
-		],
-		"description": "Creates a get_email_recipients function template"
-	},
-
-	
-	"Frappe Custom Group Button": {
-		"prefix": "custom_group_button_frappe",
-		"body": [
-		"frm.add_custom_button(__(\"${1:buttonName}\"), function() {",
-		"  // perform desired action such as routing to new form or fetching etc.",
-		"\t$2"
-		"}, __(\"${3:groupName}\"));"
-		],
-		"description": "Create a custom button with a group in Frappe framework"
-	}
-	  
 	  
 }
