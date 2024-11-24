@@ -44,6 +44,7 @@
     "url": "https://github.com/rohitpg18/frappe-js-py-snippets.git"
   },
   "scripts": {
-    "build": "npx tsc"
+    "build": "npx tsc",
+    "lint": "eslint ."
   }
 }
