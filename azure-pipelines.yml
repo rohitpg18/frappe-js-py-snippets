@@ -33,9 +33,6 @@ steps:
     publishLocation: 'Container'
   displayName: 'Save VSIX artifact'
 
-variables:
-- group: MarketplaceTokens
-
 - task: Bash@3
   inputs:
     targetType: 'inline'
@@ -44,5 +41,8 @@ variables:
   displayName: 'Publish to VS Code Marketplace'
   env:
     VSCODE_CI_TOKEN: $(VSCODE_CI_TOKEN)
+
+variables:
+  - group: MarketplaceTokens
 
 
