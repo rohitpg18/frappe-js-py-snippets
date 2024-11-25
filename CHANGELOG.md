@@ -4,6 +4,15 @@ All notable changes to the "frappe-js-and-python-snippets" extension will be doc
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [Unreleased]
+## [v0.0.1] - [v0.0.4]
 
 - Initial release
+- Added snippets for frappe js and python
+
+### [v0.0.5]
+
+- Updated Form Script, form events, Form API's as per frappe documentation.
+
+### [v0.0.6]
+
+- Updated profile image
