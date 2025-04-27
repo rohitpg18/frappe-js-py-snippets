@@ -556,5 +556,23 @@
 		],
 		"description": "Dialog with Primary and Secondary Action, Custom Size"
 	},
+
+	"frappe.realtime.on": {
+		"prefix": ["frappe", "realtime"],
+		"body": [
+			"frappe.realtime.on('${1:event_name}', (data) => {",
+			"  console.log(${2:data});",
+			"});"
+		],
+		"description": "Listen to a Frappe realtime event on the client (browser)"
+	},
+
+	"frappe.realtime.off": {
+		"prefix": ["frappe", "realtime"],
+		"body": [
+			"frappe.realtime.off('event_name')"
+		],
+		"description": "Stop listening to an event you have subscribed"
+	},
 	  
 }

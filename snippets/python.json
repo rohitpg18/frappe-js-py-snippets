@@ -1,14 +1,732 @@
+
 {
-	"Frappe WhiteListed Method": {
-		"prefix": "@",
+	"frappe.publish_realtime": {
+		"prefix": ["frappe", "publish_realtime", "realtime", "publish"],
+		"body": [
+			"frappe.publish_realtime('${1:event_name}', data={'${2:key}': '${3:value}'})"
+		],
+		"description": "To publish a realtime event from the server"
+	},
+
+	"frappe.publish_progress": {
+		"prefix": ["frappe", "realtime", "progress"],
+		"body": [
+			"frappe.publish_progress(${1:25}, title='${2:Some title}', description='${3:Some description}')"
+		],
+		"description": "Use this method to show a progress bar in a dialog"
+	},
+
+	"frappe.enqueue": {
+		"prefix": ["frappe", "enqueue", "background", "job"],
+		"body": [
+			"frappe.enqueue(",
+			"  ${1:method},",
+			"  queue=${2|\"short\", \"default\", \"long\"|}, # one of short, default, long",
+			"  timeout=${3:None},",
+			"  is_async=${4:True},",
+			"  now=${5:False},",
+			"  job_name=${6:None},",
+			"  enqueue_after_commit=${7:False},",
+			"  at_front=${8:False},",
+			"  track_job=${9:False},",
+			"  #${10:**kwargs}",
+			")"
+		],
+		"description": "You can enqueue a python method to run in the background by using the frappe.enqueue method"
+	},
+
+	"frappe.enqueue_doc": {
+		"prefix": ["frappe", "enqueue", "enqueue_doc", "job", "background"],
+		"body": [
+			"frappe.enqueue_doc(",
+			"  ${1:doctype},",
+			"  ${2:name},",
+			"  '${3:do_something}',", 
+			"  queue=${4|\"short\", \"default\", \"long\"|},  # one of short, default, long",
+			"  timeout=${5:4000},",
+			"  ${6:param}='${7:value}'",
+			")"
+		],
+		"description": "You can enqueue a Document method by using frappe.enqueue_doc."
+	},
+
+	"frappe.get_doc": {
+		"prefix": ["frappe", "get_doc", "doctype"],
+		"body": [
+			"doc = frappe.get_doc('${1:DocType}', '${2:name}')",
+			"doc.${3:field_name} = '${4:value}'",
+			"doc.save()"
+		],
+		"description": "Returns a Document object of the record identified by doctype and name. If no document is found, a DoesNotExistError is raised."
+	},
+
+	"frappe.get_single": {
+		"prefix": ["frappe", "get_single_doc", "single_doctype"],
+		"body": [
+			"doc = frappe.get_single('${1:SingleDocType}')",
+			"doc.${2:field_name} # ${3:field_value}",
+			"doc.save()"
+		],
+		"description": "Returns a Document object for a Single DocType. No name is required for Single DocTypes."
+	},
+
+	"frappe.get_doc(dict).insert()": {
+		"prefix": ["frappe", "get_doc", "new_document", "insert"],
+		"body": [
+			"doc = frappe.get_doc({",
+			"  'doctype': '${1:DocType}',",
+			"  '${2:field_name}': '${3:value}'",
+			"})",
+			"doc.insert()"
+		],
+		"description": "Returns a new Document object in memory that does not exist yet in the database. You can modify and insert it into the database."
+	},
+
+	"frappe.get_last_doc": {
+		"prefix": ["frappe", "get_last_doc", "last_document"],
+		"body": [
+			"# get the last document created",
+			"doc = frappe.get_last_doc('${1:DocType}')"
+		],
+		"description": "Returns the last Document object created under the specified doctype."
+	},
+
+	"frappe.get_last_doc_with_filters": {
+		"prefix": ["frappe", "get_last_doc", "filtered_last_document"],
+		"body": [
+			"# get the last document with filters",
+			"doc = frappe.get_last_doc('${1:DocType}', filters=${2:{'field_name': 'value'}})"
+		],
+		"description": "Returns the last Document object created under the specified doctype with optional filters applied."
+	},
+
+	"frappe.get_last_doc_with_order_by": {
+		"prefix": ["frappe", "get_last_doc", "ordered_last_document"],
+		"body": [
+			"# get the last document with a custom order_by",
+			"doc = frappe.get_last_doc('${1:DocType}', filters=${2:{'field_name': 'value'}}, order_by='${3:field_name desc}')"
+		],
+		"description": "Returns the last Document object created under the specified doctype, ordered by a custom field."
+	},
+
+	"frappe.get_cached_doc": {
+		"prefix": ["frappe", "get_cached_doc", "cached_document"],
+		"body": [
+			"# get a document from cache, if available",
+			"doc = frappe.get_cached_doc('${1:DocType}', '${2:name}')"
+		],
+		"description": "Similar to frappe.get_doc but will look up the document in cache first before hitting the database."
+	},
+
+	"frappe.new_doc": {
+		"prefix": ["frappe", "new_doc", "new_document"],
+		"body": [
+			"# create a new document",
+			"doc = frappe.new_doc('${1:DocType}')",
+			"doc.${2:field_name} = '${3:value}'",
+			"doc.insert()"
+		],
+		"description": "Alternative way to create a new Document and insert it into the database."
+	},
+
+	"frappe.delete_doc": {
+		"prefix": ["frappe", "delete_doc", "delete_document"],
+		"body": [
+			"# delete a document and its children",
+			"frappe.delete_doc('${1:DocType}', '${2:name}')"
+		],
+		"description": "Deletes the record and its children from the database, along with related documents like Communication, Comments, etc."
+	},
+
+	"frappe.rename_doc": {
+		"prefix": ["frappe", "rename_doc", "rename_document"],
+		"body": [
+			"# rename a document's name",
+			"frappe.rename_doc('${1:DocType}', '${2:old_name}', '${3:new_name}', merge=${4:False})"
+		],
+		"description": "Rename a document's name (primary key) from old_name to new_name. If merge is True, it will merge with the record having the new_name."
+	},
+
+	"frappe.get_meta": {
+		"prefix": ["frappe", "get_meta", "meta_info"],
+		"body": [
+			"# get the meta information of a doctype",
+			"meta = frappe.get_meta('${1:DocType}')",
+			"meta.has_field('${2:field_name}') # ${3:True|False}",
+			"meta.get_custom_fields() # [${4:field1}, ${5:field2}, ..]"
+		],
+		"description": "Returns meta information of doctype, including custom fields and property setters."
+	},
+
+	"doc.insert": {
+		"prefix": ["doc", "insert", "insert_document"],
+		"body": [
+			"doc.insert(",
+			"    ignore_permissions=${1:True|False}, # ignore write permissions during insert",
+			"    ignore_links=${2:True|False}, # ignore Link validation",
+			"    ignore_if_duplicate=${3:True|False}, # don't insert if DuplicateEntryError is thrown",
+			"    ignore_mandatory=${4:True|False} # insert even if mandatory fields are not set",
+			")"
+		],
+		"description": "Inserts a new document into the database table, triggering validation and other hooks like before_insert, validate, on_update, and after_insert if defined."
+	},
+
+	"doc.save": {
+		"prefix": ["doc", "save", "save_document"],
+		"body": [
+			"doc.save(",
+			"    ignore_permissions=${1:True|False}, # ignore write permissions during save",
+			"    ignore_version=${2:True|False} # do not create a version record",
+			")"
+		],
+		"description": "Saves changes to an existing document, triggering validation before updating and on_update after updating the document."
+	},
+
+	"doc.delete": {
+		"prefix": ["doc", "delete", "delete_document"],
+		"body": [
+			"doc.delete()"
+		],
+		"description": "Deletes the document record from the database table. This is an alias to frappe.delete_doc."
+	},
+
+	"doc.get_doc_before_save": {
+		"prefix": ["self", "get_doc_before_save", "before_save", "doc"],
+		"body": [
+			"# get the version of the document before the changes were made",
+			"old_doc = ${1|self,doc|}.get_doc_before_save()",
+			"if old_doc.${2:field_name} != ${3|self,doc|}.${4:field_name}:",
+			"    # field has changed",
+			"    pass"
+		],
+		"description": "Returns a version of the document before changes were made. Can be used to compare changes from the last version."
+	},
+
+	"doc.has_value_changed": {
+		"prefix": ["self", "has_value_changed", "value_changed", "doc"],
+		"body": [
+			"# check if the value of a field has changed before and after saving",
+			"price_changed = ${1|self,doc|}.has_value_changed('${2:field_name}')",
+			"if price_changed:",
+			"    # value has changed",
+			"    pass"
+		],
+		"description": "Returns True if the value of the given field was changed before and after saving."
+	},
+
+	"doc.reload": {
+		"prefix": ["self", "reload", "refresh", "doc"],
+		"body": [
+			"# reload the document to get the latest values from the database",
+			"${1|self,doc|}.reload()"
+		],
+		"description": "Reloads the document to get the latest values from the database."
+	},
+
+	"doc.check_permission": {
+		"prefix": ["self", "doc", "check_permission", "permission"],
+		"body": [
+			"# check if the current user has the required permission",
+			"${1|self,doc|}.check_permission(permtype='write')"
+		],
+		"description": "Throws an error if the current user does not have the specified permission (e.g., 'write')."
+	},
+
+	"doc.get_title": {
+		"prefix": ["self", "doc", "get_title", "title"],
+		"body": [
+			"# get the title of the document",
+			"title = ${1|self,doc|}.get_title()"
+		],
+		"description": "Fetches the title of the document based on title_field or a field named title or name."
+	},
+
+	"doc.notify_update": {
+		"prefix": ["self", "doc", "notify_update", "update"],
+		"body": [
+			"# notify the system that the document has been updated",
+			"${1|self,doc|}.notify_update()"
+		],
+		"description": "Publish a realtime event to indicate that the document has been modified. Client-side event handlers react to this event by updating the form."
+	},
+
+	"doc.db_set": {
+		"prefix": ["self", "doc", "db_set", "set"],
+		"body": [
+			"${1|self,doc|}.db_set('${2:field_name}', ${3:value})"
+		],
+		"description": "Update a field value in the database directly, without triggering any other actions."
+	},
+
+	"doc.db_set.notify": {
+		"prefix": ["self", "doc", "db_set", "set"],
+		"body": [
+			"# updates value in the database and triggers doc.notify_update()",
+			"${1|self,doc|}.db_set('${2:field_name}', ${3:value}, notify=True)"
+		],
+		"description": "Update a field value in the database and trigger doc.notify_update() to notify of changes."
+	},
+
+	"doc.db_set.commit": {
+		"prefix": ["self", "doc", "db_set", "set"],
+		"body": [
+			"# updates value in the database and commits to the database",
+			"${1|self,doc|}.db_set('${2:field_name}', ${3:value}, commit=True)"
+		],
+		"description": "Update a field value and commit the change to the database."
+	},
+	
+	"doc.db_set.no_timestamp": {
+		"prefix": ["self", "doc", "db_set", "set"],
+		"body": [
+			"# updates value in the database, does not update the modified timestamp",
+			"${1|self,doc|}.db_set('${2:field_name}', ${3:value}, update_modified=False)"
+		],
+		"description": "Update a field value without modifying the document's modified timestamp."
+	},
+
+	"doc.append": {
+		"prefix": ["self", "doc", "append"],
+		"body": [
+			"# append a new item to a child table",
+			"${1|self,doc|}.append('${2:child_table}', {",
+			"    '${3:child_table_field}': '${4:value}',",
+			"    '${5:child_table_int_field}': ${6:0},",
+			"    ...",
+			"})"
+		],
+		"description": "Append a new item to a child table in the document."
+	},
+
+	"doc.get_url": {
+		"prefix": ["self", "doc", "get_url"],
+		"body": [
+			"# get the Desk URL for the document",
+			"${1|self,doc|}.get_url()"
+		],
+		"description": "Returns Desk URL for this document, e.g., /app/task/TASK00002"
+	},
+
+	"doc.add_comment.simple": {
+		"prefix": ["self", "doc", "add_comment", "simple"],
+		"body": [
+			"# add a simple comment",
+			"${1|self,doc|}.add_comment('Comment', text='Test Comment')"
+		],
+		"description": "Add a simple comment to the document"
+	},
+
+	"doc.add_comment.edit": {
+		"prefix": ["self", "doc", "add_comment", "edit"],
+		"body": [
+			"# add a comment of type Edit",
+			"${1|self,doc|}.add_comment('Edit', 'Values changed')"
+		],
+		"description": "Add a comment of type Edit to the document"
+	},
+
+	"doc.add_comment.shared": {
+		"prefix": ["self", "doc", "add_comment", "shared"],
+		"body": [
+			"# add a comment of type Shared",
+			"${1|self,doc|}.add_comment('Shared', '{0} shared this document with everyone'.format(user))"
+		],
+		"description": "Add a comment of type Shared to the document"
+	},
+
+	"doc.add_tag": {
+		"prefix": ["self", "doc", "add_tag"],
+		"body": [
+			"# add tags",
+			"${1|self,doc|}.add_tag('developer')",
+		],
+		"description": "Add a tag to a document"
+	},
+
+	"doc.add_seen": {
+		"prefix": ["self", "doc", "add_seen"],
+		"body": [
+			"# add john to list of seen",
+			"${1|self,doc|}.add_seen('john@doe.com')",
+			"",
+			"# add session user to list of seen",
+			"${1|self,doc|}.add_seen()"
+		],
+		"description": "Add the given/current user to list of users who have seen this document"
+	},
+
+	"doc.add_viewed": {
+		"prefix": ["self", "doc", "add_viewed"],
+		"body": [
+			"# add a view log by john",
+			"${1|self,doc|}.add_viewed('john@doe.com')",
+			"",
+			"# add a view log by session user",
+			"${1|self,doc|}.add_viewed()"
+		],
+		"description": "Add a view log when a user views a document"
+	},
+
+	"doc.get_tags": {
+		"prefix": ["self", "doc", "get_tags"],
+		"body": [
+			"# get all tags",
+			"${1|self,doc|}.get_tags()"
+		],
+		"description": "Returns a list of tags associated with the specific document"
+	},
+
+	"doc.run_method": {
+		"prefix": ["self", "doc", "run_method"],
+		"body": [
+			"# run method 'controller_method' defined in controller",
+			"${1|self,doc|}.run_method('controller_method')",
+		],
+		"description": "Run method if defined in controller, will also trigger hooks if defined"
+	},
+
+	"doc.queue_action": {
+		"prefix": ["self", "doc", "queue_action"],
+		"body": [
+			"# run controller method 'send_emails' in background",
+			"${1|self,doc|}.queue_action('send_emails', emails=email_list, message='Howdy')"
+		],
+		"description": "Run a controller method in background. If the method has an inner function, like _submit for submit, it will call that method instead."
+	},
+
+	"doc.get_children": {
+		"prefix": ["self", "doc", "get_children"],
+		"body": [
+			"# get all child documents",
+			"for child_doc in ${1|self,doc|}.get_children():",
+			"    print(child_doc.name)"
+		],
+		"description": "Returns a generator that yields an instance of NestedSet for each child record. Only available on tree DocTypes (inherited from NestedSet)."
+	},
+
+	"doc.get_parent": {
+		"prefix": ["self", "doc", "get_parent"],
+		"body": [
+			"# get the parent document",
+			"parent_doc = ${1|self,doc|}.get_parent()",
+		],
+		"description": "Returns an instance of NestedSet for the parent record. Only available on tree DocTypes (inherited from NestedSet)."
+	},
+
+	"doc.db_insert": {
+		"prefix": ["self", "doc", "db_insert"],
+		"body": [
+			"# insert the document into the database without validations or controller methods",
+			"${1|self,doc|}.db_insert()"
+		],
+		"description": "Serialize and insert a document into the database. Warning: This bypasses all validations and controller methods that might be required to run before and after inserting. When in doubt use doc.insert() instead."
+	},
+
+	"doc.db_update": {
+		"prefix": ["self", "doc", "db_update"],
+		"body": [
+			"# update the last active field and save to database without validations or controller methods",
+			"${1|self,doc|}.last_active = now()",
+			"${1|self,doc|}.db_update()"
+		],
+		"description": "Serialize and update a document into the database. Warning: This bypasses all validations and controller methods that might be required to run before and after updating. When in doubt use doc.save() instead."
+	},
+
+	"frappe.db.get_list": {
+		"prefix": ["frappe", "db", "get_list"],
+		"body": [
+			"frappe.db.get_list('${1|doctype|}',",
+			"    filters={",
+			"        '${2|field1|}': '${3|value|}'",
+			"    },",
+			"    fields=['${4|field2|}', '${5|field3|}'],",
+			"    order_by='${6|field3 desc|}',",
+			"    start=${7|10|},",
+			"    page_length=${8|20|},",
+			"    as_list=True",
+			")",
+		],
+		"description": "Returns a list of records from a doctype table. ORM Wrapper for a SELECT query. Will also apply user permissions for the records for the session user. Only returns the document names if the fields keyword argument is not given. By default this method returns a list of dicts, but, you can pluck a particular field by giving the pluck keyword argument."
+	},
+
+	"frappe.db.get_list.pluck": {
+		"prefix": ["frappe", "db", "get_list", "pluck"],
+		"body": [
+			"frappe.db.get_list('${1|doctype|}',",
+			"    pluck='${2|field_name|}'",
+			")"
+		],
+		"description": "Returns a list of specific field values (pluck) from a doctype table. Only returns the values of the given field."
+	},
+
+	"frappe.db.get_list.date_after": {
+		"prefix": ["frappe", "db", "get_list", "date_after"],
+		"body": [
+			"frappe.db.get_list('${1|doctype|}', filters={",
+			"    '${2|field_name|}': ['>', '${3|date|}']",
+			"})"
+		],
+		"description": "Fetch records from a doctype where a date field is after a given date."
+	},
+
+	"frappe.db.get_list.date_between": {
+		"prefix": ["frappe", "db", "get_list", "date_between"],
+		"body": [
+			"frappe.db.get_list('${1|doctype|}', filters=[",
+			"    ['${2|field_name|}', 'between', ['${3|start_date|}', '${4|end_date|}']]",
+			"])"
+		],
+		"description": "Fetch records from a doctype where a date field is between two given dates."
+	},
+
+	"frappe.db.get_list.like_string": {
+		"prefix": ["frappe", "db", "get_list", "like_string"],
+		"body": [
+			"frappe.db.get_list('${1|doctype|}', filters={",
+			"    '${2|field_name|}': ['like', '%${3|string|}%']",
+			"})"
+		],
+		"description": "Fetch records from a doctype where a field contains a specific string."
+	},
+
+	"frappe.db.get_list.group_by": {
+		"prefix": ["frappe", "db", "get_list", "group_by"],
+		"body": [
+			"frappe.db.get_list('${1|doctype|}',",
+			"    fields=['count(name) as count', '${2|field_name|}'],",
+			"    group_by='${3|field_name|}'",
+			")"
+		],
+		"description": "Fetch records from a doctype and group them by a specific field."
+	},
+
+	"frappe.db.get_all": {
+		"prefix": ["frappe", "db", "get_all"],
+		"body": [
+			"frappe.db.get_all('${1|doctype|}', filters=${2|filters|}, or_filters=${3|or_filters|}, fields=${4|fields|}, order_by=${5|order_by|}, group_by=${6|group_by|}, start=${7|start|}, page_length=${8|page_length|})"
+		],
+		"description": "Fetch all records from a doctype without applying permissions. Same as frappe.db.get_list but skips user permissions check."
+	},
+
+	"frappe.db.get_value(single value)": {
+		"prefix": ["frappe", "db", "get_value"],
+		"body": [
+			"${1|fieldname|} = frappe.db.get_value('${2|doctype|}', '${3|name|}', '${4|fieldname|}')"
+		],
+		"description": "Fetch a single field value from a doctype."
+	},
+
+	"frappe.db.get_value(multiple values)": {
+		"prefix": ["frappe", "db", "get_value"],
+		"body": [
+			"${1|fieldname1|}, ${2|fieldname2|} = frappe.db.get_value('${3|doctype|}', '${4|name|}', ['${5|fieldname1|}', '${6|fieldname2|}'])"
+		],
+		"description": "Fetch multiple field values from a doctype."
+	},
+
+	"frappe.db.get_value(as dict)": {
+		"prefix": ["frappe", "db", "get_value"],
+		"body": [
+			"${1|dict_name|} = frappe.db.get_value('${2|doctype|}', '${3|name|}', ['${4|fieldname1|}', '${5|fieldname2|}'], as_dict=1)",
+		],
+		"description": "Fetch multiple field values as a dictionary."
+	},
+
+	"frappe.db.get_single_value": {
+		"prefix": ["frappe", "db", "get_single_value"],
+		"body": [
+			"${1|fieldname|} = frappe.db.get_single_value('${2|doctype|}', '${3|fieldname|}')"
+		],
+		"description": "Fetch a field value from a Single DocType."
+	},
+
+	"frappe.db.set_value": {
+		"prefix": ["frappe", "db", "set_value"],
+		"body": [
+			"frappe.db.set_value('${1|doctype|}', '${2|name|}', '${3|fieldname|}', '${4|value|}')"
+		],
+		"description": "Update a field value in the database."
+	},
+
+	"frappe.db.set_value_multiple": {
+		"prefix": ["frappe", "db", "set_value"],
+		"body": [
+			"frappe.db.set_value('${1|doctype|}', '${2|name|}', {",
+			"    '${3|fieldname1|}': '${4|value1|}',",
+			"    '${5|fieldname2|}': '${6|value2|}'",
+			"})"
+		],
+		"description": "Update multiple field values in the database."
+	},
+
+	"frappe.db.set_value_no_timestamp": {
+		"prefix": ["frappe", "db", "set_value"],
+		"body": [
+			"frappe.db.set_value('${1|doctype|}', '${2|name|}', '${3|fieldname|}', '${4|value|}', update_modified=False)"
+		],
+		"description": "Update a field value without modifying the `modified` timestamp."
+	},
+
+	"frappe.db.exists_docname": {
+		"prefix": ["frappe", "db", "exists"],
+		"body": [
+			"# check if a document record exists",
+			"frappe.db.exists('${1|doctype|}', '${2|name|}')"
+		],
+		"description": "Check if a document record exists using doctype and docname."
+	},
+
+	"frappe.db.exists_dict_with_doctype": {
+		"prefix": ["frappe", "db", "exists"],
+		"body": [
+			"# check if a document record exists with a dict of filters including doctype",
+			"frappe.db.exists({",
+			"    'doctype': '${1|doctype|}',",
+			"    '${2|filter_field|}': '${3|filter_value|}'",
+			"})"
+		],
+		"description": "Check if a document record exists using a dict of filters including the 'doctype' key."
+	},
+
+	"frappe.db.exists_dict": {
+		"prefix": ["frappe", "db", "exists"],
+		"body": [
+			"# check if a document record exists with a dict of filters",
+			"frappe.db.exists('${1|doctype|}', {",
+			"    '${2|filter_field|}': '${3|filter_value|}'",
+			"})"
+		],
+		"description": "Check if a document record exists using doctype and a dict of filters."
+	},
+
+	"frappe.db.count_all": {
+		"prefix": ["frappe", "db", "count"],
+		"body": [
+			"frappe.db.count('${1|doctype|}')"
+		],
+		"description": "Get the total number of records for a given doctype."
+	},
+
+	"frappe.db.count_filtered": {
+		"prefix": ["frappe", "db", "count"],
+		"body": [
+			"frappe.db.count('${1|doctype|}', {",
+			"    '${2|filter_field|}': '${3|filter_value|}'",
+			"})"
+		],
+		"description": "Get the total number of records for a doctype with filters."
+	},
+
+	"frappe.db.delete_filtered": {
+		"prefix": ["frappe", "db", "delete"],
+		"body": [
+			"# Delete records based on filters",
+			"frappe.db.delete('${1|doctype|}', {",
+			"    '${2|filter_field|}': '${3|filter_value|}'",
+			"})"
+		],
+		"description": "Delete records based on filters."
+	},
+
+	"frappe.db.delete_all": {
+		"prefix": ["frappe", "db", "delete"],
+		"body": [
+			"# Delete all records of a doctype",
+			"frappe.db.delete('${1|doctype|}')"
+		],
+		"description": "Delete all records of a given doctype."
+	},
+
+	"frappe.db.truncate": {
+		"prefix": ["frappe", "db", "truncate"],
+		"body": [
+			"# Truncate a table in the database",
+			"frappe.db.truncate('${1|doctype|}')"
+		],
+		"description": "Truncate a table in the database. This action cannot be rolled back."
+	},
+
+	"frappe.db.commit": {
+		"prefix": ["frappe", "db", "commit"],
+		"body": [
+			"# Commit current transaction",
+			"frappe.db.commit()"
+		],
+		"description": "Commits the current transaction. Calls SQL COMMIT."
+	},
+
+	"frappe.db.savepoint": {
+		"prefix": ["frappe", "db", "savepoint"],
+		"body": [
+			"# Create a named savepoint",
+			"frappe.db.savepoint('my_savepoint')"
+		],
+		"description": "Create a named savepoint to which you can later roll back."
+	},
+
+	"frappe.db.rollback": {
+		"prefix": ["frappe", "db", "rollback"],
+		"body": [
+			"# Rollback current transaction",
+			"frappe.db.rollback()"
+		],
+		"description": "Rollbacks current transaction. Calls SQL ROLLBACK."
+	},
+
+	"frappe.db.rollback_savepoint": {
+		"prefix": ["frappe", "db", "rollback_savepoint"],
+		"body": [
+			"# Rollback to a specific savepoint",
+			"frappe.db.rollback(save_point='save_point_name')"
+		],
+		"description": "Rollback to a specific savepoint instead of rolling back the full transaction."
+	},
+
+	"frappe.db.sql": {
+		"prefix": ["frappe", "db", "sql"],
+		"body": [
+			"filters = {'${1|fieldname|}': '${2|value|}'}",
+			"data = frappe.db.sql(\"\"\"",
+			"    SELECT",
+			"        doc.${5|doc_fieldname|},",
+			"        child.${3|child_fieldname|},",
+			"    FROM `tab${3|doctype|}` doc",
+			"    LEFT JOIN `tab${4|child_doctype|}` child",
+			"    ON child.parent = doc.name",
+			"    WHERE doc.${6|fieldname|} = %(${7|fieldname|})s",
+			"\"\"\", values=filters, as_dict=${8|True,False|})"
+		],
+		"description": "Execute an arbitrary SQL query. Useful for complex queries and adjusting the database."
+	},
+
+	"frappe.db.add_index": {
+		"prefix": ["frappe", "db", "add_index"],
+		"body": [
+			"# Creates indexes for doctypes for the specified fields",
+			"frappe.db.add_index('DoctypeName', ['field1(10)', 'field2(500)'], 'index_name')"
+		],
+		"description": "Creates indexes for doctypes for the specified fields. Specify fixed length for TEXT or BLOB fields."
+	},
+
+	"frappe.db.add_unique": {
+		"prefix": ["frappe", "db", "add_unique"],
+		"body": [
+			"# Creates unique constraint for doctypes for the specified fields",
+			"frappe.db.add_unique('DoctypeName', ['field1', 'field2'])"
+		],
+		"description": "Creates unique constraint for doctypes for the specified fields."
+	},
+
+	"whitelist method": {
+		"prefix": ["@", "frappe"],
 		"body": [
 			"@frappe.whitelist()"
 		],
 		"description": "Make Method Whitelisted"
 	},
 	
-	"Frappe API": {
-		"prefix": "frappe_api_method",
+	"api method": {
+		"prefix": ["frappe_api_method", "whitelisted_method"],
 		"body": [
 			"@frappe.whitelist()",
 			"def ${1:method_name}(${2:args}):",
@@ -16,37 +734,6 @@
 			"    return ${4:{}}"
 		],
 		"description": "Create a Frappe API method"
-	},
-	
-	"Frappe Fetch Data": {
-		"prefix": "frappe_get_all",
-		"body": [
-			"data = frappe.get_all('${2:DocType}',",
-			"    filters={${3:'key': 'value'}},",
-			"    fields=[${4:'field1', 'field2'}])",
-			"return data"
-		],
-		"description": "Fetch data using Frappe ORM"
-	},
-	
-	"Frappe DB Set Value": {
-		"prefix": "frappe_set_value",
-		"body": [
-			"frappe.db.set_value('${2:DocType}', '${3:name}', '${4:field_name}', ${5:new_value})",
-		],
-		"description": "Set a value in Frappe using frappe.db.set_value and commit changes."
-	},
-	
-	"Frappe DB Set Values": {
-		"prefix": "frappe_set_values",
-		"body": [
-		  "frappe.db.set_value('${2:DocType}', '${3:name}', {",
-      "        '${4:field_name_1}': ${5:value_1},",
-      "        '${6:field_name_2}': ${7:value_2},",
-      "        ${8:# add more fields if needed}",
-      "    })",
-		],
-		"description": "Set a value in Frappe using frappe.db.set_value and commit changes."
 	},
 	  
 	"Frappe Controller Methods Without Class": {

@@ -16,3 +16,7 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ### [v0.0.6]
 
 - Updated profile image
+
+### [v0.0.7]
+
+- Updated python snippets for Document API, Database API and Background Jobs
